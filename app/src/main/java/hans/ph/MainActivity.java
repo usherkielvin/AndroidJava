@@ -2,6 +2,7 @@ package hans.ph;
 
 import hans.ph.R;
 import android.os.Bundle;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
 		// CTA behavior
 		if (primaryCta != null) {
-			primaryCta.setOnClickListener(v ->
-					Toast.makeText(this, "Getting started...", Toast.LENGTH_SHORT).show()
-			);
+			primaryCta.setOnClickListener(v -> {
+				startActivity(new Intent(this, SecondActivity.class));
+			});
 		} else {
 			Log.w("MainActivity", "Primary CTA not found in layout");
 		}
