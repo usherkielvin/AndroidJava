@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 				}
 
 				if (email.equals(DEFAULT_EMAIL) && password.equals(DEFAULT_PASSWORD)) {
-					startActivity(new Intent(this, DashboardActivity.class));
+					Intent intent = new Intent(this, DashboardActivity.class);
+					intent.putExtra("email", email);
+					startActivity(intent);
 					finish();
 				} else {
 					Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
