@@ -5,19 +5,19 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        app:title="Second Screen" />
+        app:title="Dashboard" />
 
     <TextView
-        android:id="@+id/secondMessage"
+        android:id="@+id/dashboardMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello from SecondActivity"
-        android:layout_gravity="center" />
+        android:text="Welcome to Dashboard"
+        android:layout_gravity="center"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
