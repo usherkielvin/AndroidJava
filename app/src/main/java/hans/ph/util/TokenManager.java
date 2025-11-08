@@ -9,19 +9,14 @@ public class TokenManager {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NAME = "name";
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private Context context;
+    private final SharedPreferences sharedPreferences;
 
     public TokenManager(Context context) {
-        this.context = context;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
     }
 
     public void saveToken(String token) {
-        editor.putString(KEY_TOKEN, token);
-        editor.apply();
+        sharedPreferences.edit().putString(KEY_TOKEN, token).apply();
     }
 
     public String getToken() {
@@ -29,8 +24,7 @@ public class TokenManager {
     }
 
     public void saveEmail(String email) {
-        editor.putString(KEY_EMAIL, email);
-        editor.apply();
+        sharedPreferences.edit().putString(KEY_EMAIL, email).apply();
     }
 
     public String getEmail() {
@@ -38,8 +32,7 @@ public class TokenManager {
     }
 
     public void saveName(String name) {
-        editor.putString(KEY_NAME, name);
-        editor.apply();
+        sharedPreferences.edit().putString(KEY_NAME, name).apply();
     }
 
     public String getName() {
@@ -47,8 +40,7 @@ public class TokenManager {
     }
 
     public void clear() {
-        editor.clear();
-        editor.apply();
+        sharedPreferences.edit().clear().apply();
     }
 
     public boolean isLoggedIn() {
