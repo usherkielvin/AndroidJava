@@ -16,9 +16,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
 	private String registeredName;
 	private ProgressBar progressBar;
 	private TextView messageTextView;
-	private Spinner roleSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +52,11 @@ public class RegisterActivity extends AppCompatActivity {
 		TextInputEditText emailInput = findViewById(R.id.emailInput);
 		TextInputEditText passwordInput = findViewById(R.id.passwordInput);
 		TextInputEditText confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
-		TextInputEditText phoneInput = findViewById(R.id.phoneInput);
-		TextInputEditText departmentInput = findViewById(R.id.departmentInput);
-		TextInputEditText addressInput = findViewById(R.id.addressInput);
 		TextInputLayout emailInputLayout = findViewById(R.id.emailInputLayout);
-		roleSpinner = findViewById(R.id.roleSpinner);
 		progressBar = findViewById(R.id.progressBar);
 		messageTextView = findViewById(R.id.messageTextView);
 		MaterialButton registerButton = findViewById(R.id.registerButton);
 		MaterialButton backToLoginButton = findViewById(R.id.backToLoginButton);
-
-		// Setup role spinner
-		setupRoleSpinner();
 
 		// Real-time email validation
 		if (emailInput != null) {
@@ -111,13 +101,9 @@ public class RegisterActivity extends AppCompatActivity {
 				String email = emailInput != null ? emailInput.getText().toString().trim() : "";
 				String password = passwordInput != null ? passwordInput.getText().toString() : "";
 				String confirmPassword = confirmPasswordInput != null ? confirmPasswordInput.getText().toString() : "";
-				String phone = phoneInput != null ? phoneInput.getText().toString().trim() : "";
-				String department = departmentInput != null ? departmentInput.getText().toString().trim() : "";
-				String address = addressInput != null ? addressInput.getText().toString().trim() : "";
-				String role = roleSpinner != null ? roleSpinner.getSelectedItem().toString().toLowerCase() : "employee";
 
-				if (validateInput(name, email, password, confirmPassword, phone)) {
-					register(name, email, password, confirmPassword, role, phone, department, address);
+				if (validateInput(name, email, password, confirmPassword)) {
+					register(name, email, password, confirmPassword);
 				}
 			});
 		}
@@ -131,17 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 	}
 
-	private void setupRoleSpinner() {
-		if (roleSpinner != null) {
-			String[] roles = {getString(R.string.employee), getString(R.string.admin)};
-			ArrayAdapter<String> adapter = new ArrayAdapter<>(this, 
-				android.R.layout.simple_spinner_item, roles);
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			roleSpinner.setAdapter(adapter);
-		}
-	}
-
-	private boolean validateInput(String name, String email, String password, String confirmPassword, String phone) {
+	private boolean validateInput(String name, String email, String password, String confirmPassword) {
 		boolean isValid = true;
 		StringBuilder errorMessage = new StringBuilder();
 
@@ -177,12 +153,6 @@ public class RegisterActivity extends AppCompatActivity {
 			isValid = false;
 		}
 
-		// Phone validation (optional but if provided, should be valid)
-		if (!phone.isEmpty() && phone.length() < 10) {
-			errorMessage.append("• Please enter a valid phone number\n");
-			isValid = false;
-		}
-
 		if (!isValid) {
 			showMessage(errorMessage.toString().trim(), true);
 		}
@@ -209,16 +179,12 @@ public class RegisterActivity extends AppCompatActivity {
 		}
 	}
 
-	private void register(String name, String email, String password, String confirmPassword, 
-			String role, String phone, String department, String address) {
+	private void register(String name, String email, String password, String confirmPassword) {
 		// Show loading state
 		setLoadingState(true);
 
 		ApiService apiService = ApiClient.getApiService();
-		RegisterRequest request = new RegisterRequest(name, email, password, confirmPassword, 
-			role, phone.isEmpty() ? null : phone, 
-			department.isEmpty() ? null : department, 
-			address.isEmpty() ? null : address);
+		RegisterRequest request = new RegisterRequest(name, email, password, confirmPassword);
 
 		Call<RegisterResponse> call = apiService.register(request);
 		call.enqueue(new Callback<RegisterResponse>() {
