@@ -5,9 +5,12 @@ import hans.ph.api.ApiClient;
 import hans.ph.api.ApiService;
 import hans.ph.api.LoginRequest;
 import hans.ph.api.LoginResponse;
+import hans.ph.util.EmailValidator;
 import hans.ph.util.TokenManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,8 +46,43 @@ public class MainActivity extends AppCompatActivity {
 
 		TextInputEditText emailInput = findViewById(R.id.emailInput);
 		TextInputEditText passwordInput = findViewById(R.id.passwordInput);
+		TextInputLayout emailInputLayout = findViewById(R.id.emailInputLayout);
 		MaterialButton loginButton = findViewById(R.id.loginButton);
 		MaterialButton registerButton = findViewById(R.id.registerButton);
+
+		// Real-time email validation
+		if (emailInput != null) {
+			emailInput.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					String email = s.toString().trim();
+					if (email.isEmpty()) {
+						if (emailInputLayout != null) {
+							emailInputLayout.setError(null);
+						}
+						return;
+					}
+
+					EmailValidator.ValidationResult result = EmailValidator.validate(email);
+					if (!result.isValid() && email.length() > 5) {
+						// Only show error if user has typed enough characters
+						if (emailInputLayout != null) {
+							emailInputLayout.setError(result.getMessage());
+						}
+					} else {
+						if (emailInputLayout != null) {
+							emailInputLayout.setError(null);
+						}
+					}
+				}
+			});
+		}
 
 		if (registerButton != null) {
 			registerButton.setOnClickListener(v -> {
