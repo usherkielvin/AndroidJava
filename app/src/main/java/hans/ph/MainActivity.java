@@ -170,18 +170,8 @@ public class MainActivity extends AppCompatActivity {
 					}
 				});
 
-				String errorMsg = "Connection error";
-				if (t.getMessage() != null) {
-					if (t.getMessage().contains("Failed to connect") || t.getMessage().contains("Unable to resolve host")) {
-						errorMsg = "Cannot connect to server.\n\nPlease check:\n1. Laravel server is running\n2. Correct API URL in ApiClient.java\n3. Network connection";
-					} else if (t.getMessage().contains("timeout")) {
-						errorMsg = "Connection timeout. Server may be slow or unreachable.";
-					} else {
-						errorMsg = "Error: " + t.getMessage();
-					}
-				}
-				final String finalErrorMsg = errorMsg;
-				runOnUiThread(() -> showError("Connection Error", finalErrorMsg));
+				String errorMsg = getConnectionErrorMessage(t);
+				runOnUiThread(() -> showError("Connection Error", errorMsg));
 			}
 		});
 	}
@@ -192,5 +182,43 @@ public class MainActivity extends AppCompatActivity {
 			.setMessage(message)
 			.setPositiveButton("OK", null)
 			.show();
+	}
+
+	// Get user-friendly connection error message with diagnostics
+	private String getConnectionErrorMessage(Throwable t) {
+		if (t.getMessage() == null) {
+			return "Connection error. Please try again.";
+		}
+
+		String message = t.getMessage();
+		String baseUrl = ApiClient.getBaseUrl();
+		StringBuilder errorMsg = new StringBuilder();
+		
+		if (message.contains("Failed to connect") || message.contains("Unable to resolve host")) {
+			errorMsg.append("❌ Cannot connect to server\n\n");
+			errorMsg.append("Trying to reach: ").append(baseUrl).append("/api/v1/login\n\n");
+			errorMsg.append("Please check:\n");
+			errorMsg.append("1. Laravel server is running: php artisan serve\n");
+			errorMsg.append("2. Server is on port 8000 (default)\n");
+			errorMsg.append("3. For emulator, use: http://10.0.2.2:8000\n");
+			errorMsg.append("4. For physical device, use your computer's IP\n");
+			errorMsg.append("5. Check ApiClient.java BASE_URL setting\n");
+			errorMsg.append("6. Verify network_security_config.xml allows cleartext\n\n");
+			errorMsg.append("Test in browser: ").append(baseUrl).append("/api/v1/login");
+		} else if (message.contains("timeout")) {
+			errorMsg.append("⏱ Connection timeout\n\n");
+			errorMsg.append("Server may be slow or unreachable.\n");
+			errorMsg.append("Check if Laravel server is running and accessible.");
+		} else if (message.contains("Connection refused")) {
+			errorMsg.append("🔌 Connection refused\n\n");
+			errorMsg.append("Server is not running or not accessible.\n");
+			errorMsg.append("Please start Laravel server: php artisan serve\n");
+			errorMsg.append("Expected URL: ").append(baseUrl);
+		} else {
+			errorMsg.append("❌ Connection error\n\n");
+			errorMsg.append("Details: ").append(message);
+		}
+
+		return errorMsg.toString();
 	}
 }

@@ -469,23 +469,42 @@ public class RegisterActivity extends AppCompatActivity {
 		});
 	}
 
-	// Get user-friendly connection error message
+	// Get user-friendly connection error message with diagnostics
 	private String getConnectionErrorMessage(Throwable t) {
 		if (t.getMessage() == null) {
 			return "Connection error. Please try again.";
 		}
 
 		String message = t.getMessage();
+		String baseUrl = ApiClient.getBaseUrl();
+		StringBuilder errorMsg = new StringBuilder();
+		
 		if (message.contains("Failed to connect") || message.contains("Unable to resolve host")) {
-			return "Cannot connect to server. Please check:\n" +
-			       "1. Laravel server is running\n" +
-			       "2. Correct API URL in ApiClient.java\n" +
-			       "3. Network connection";
+			errorMsg.append("❌ Cannot connect to server\n\n");
+			errorMsg.append("Trying to reach: ").append(baseUrl).append("/api/v1/register\n\n");
+			errorMsg.append("Please check:\n");
+			errorMsg.append("1. Laravel server is running: php artisan serve\n");
+			errorMsg.append("2. Server is on port 8000 (default)\n");
+			errorMsg.append("3. For emulator, use: http://10.0.2.2:8000\n");
+			errorMsg.append("4. For physical device, use your computer's IP\n");
+			errorMsg.append("5. Check ApiClient.java BASE_URL setting\n");
+			errorMsg.append("6. Verify network_security_config.xml allows cleartext\n\n");
+			errorMsg.append("Test in browser: ").append(baseUrl).append("/api/v1/register");
 		} else if (message.contains("timeout")) {
-			return "Connection timeout. Server may be slow or unreachable.";
+			errorMsg.append("⏱ Connection timeout\n\n");
+			errorMsg.append("Server may be slow or unreachable.\n");
+			errorMsg.append("Check if Laravel server is running and accessible.");
+		} else if (message.contains("Connection refused")) {
+			errorMsg.append("🔌 Connection refused\n\n");
+			errorMsg.append("Server is not running or not accessible.\n");
+			errorMsg.append("Please start Laravel server: php artisan serve\n");
+			errorMsg.append("Expected URL: ").append(baseUrl);
+		} else {
+			errorMsg.append("❌ Connection error\n\n");
+			errorMsg.append("Details: ").append(message);
 		}
 
-		return "Error: " + message;
+		return errorMsg.toString();
 	}
 
 	// Show or hide loading state during registration
