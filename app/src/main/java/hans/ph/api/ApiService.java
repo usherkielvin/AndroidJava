@@ -1,5 +1,8 @@
 package hans.ph.api;
 
+import com.servicehub.model.ChatRequest;
+import com.servicehub.model.ChatResponse;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -24,5 +27,7 @@ public interface ApiService {
 
     @GET("api/v1/user")
     Call<UserResponse> getUser(@Header("Authorization") String token);
-}
 
+    @POST("api/v1/chatbot")
+    Call<ChatResponse> sendMessage(@Body ChatRequest request);
+}

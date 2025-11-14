@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 			errorMsg.append("Check if Laravel server is running and accessible.");
 		} else if (message.contains("Connection refused")) {
 			errorMsg.append("🔌 Connection refused\n\n");
-			errorMsg.append("Server is not running or not accessible.\n");
+			errorMsg.append("Server is not running or not accessible.\n ");
 			errorMsg.append("Please start Laravel server: php artisan serve\n");
 			errorMsg.append("Expected URL: ").append(baseUrl);
 		} else {
