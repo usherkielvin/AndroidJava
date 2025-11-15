@@ -84,10 +84,12 @@ public class DashboardActivity extends AppCompatActivity {
         chatAdapter.notifyItemInserted(messageList.size() - 1);
 
         sendButton.setOnClickListener(v -> {
-            String messageText = messageEditText.getText().toString().trim();
-            if (!messageText.isEmpty()) {
-                sendMessage(messageText, messageList, chatAdapter, recyclerView);
-                messageEditText.setText("");
+            if (messageEditText.getText() != null) {
+                String messageText = messageEditText.getText().toString().trim();
+                if (!messageText.isEmpty()) {
+                    sendMessage(messageText, messageList, chatAdapter, recyclerView);
+                    messageEditText.setText("");
+                }
             }
         });
 
@@ -100,29 +102,34 @@ public class DashboardActivity extends AppCompatActivity {
         recyclerView.scrollToPosition(messageList.size() - 1);
 
         Call<ChatResponse> call = apiService.sendMessage(new ChatRequest(messageText));
-        call.enqueue(new Callback<ChatResponse>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+            public void onResponse(@NonNull Call<ChatResponse> call, @NonNull Response<ChatResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     String reply = response.body().getReply();
                     messageList.add(new Message(reply, false));
                     chatAdapter.notifyItemInserted(messageList.size() - 1);
                     recyclerView.scrollToPosition(messageList.size() - 1);
                 } else {
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                        Log.e(TAG, "API Error: " + response.code() + " " + errorBody);
-                        messageList.add(new Message("Error: " + response.code(), false));
-                        chatAdapter.notifyItemInserted(messageList.size() - 1);
-                        recyclerView.scrollToPosition(messageList.size() - 1);
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error parsing error body", e);
+                    String errorBody = "No error body";
+                    okhttp3.ResponseBody errorResponseBody = response.errorBody();
+                    if (errorResponseBody != null) {
+                        try (okhttp3.ResponseBody body = errorResponseBody) {
+                            errorBody = body.string();
+                        } catch (IOException e) {
+                            Log.e(TAG, "Error parsing error body", e);
+                            errorBody = "Error reading response";
+                        }
                     }
+                    Log.e(TAG, "API Error: " + response.code() + " " + errorBody);
+                    messageList.add(new Message("Error: " + response.code(), false));
+                    chatAdapter.notifyItemInserted(messageList.size() - 1);
+                    recyclerView.scrollToPosition(messageList.size() - 1);
                 }
             }
 
             @Override
-            public void onFailure(Call<ChatResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<ChatResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "API Failure: ", t);
                 messageList.add(new Message("Failed to connect to the server.", false));
                 chatAdapter.notifyItemInserted(messageList.size() - 1);
