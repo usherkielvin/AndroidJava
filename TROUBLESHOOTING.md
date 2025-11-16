@@ -22,21 +22,23 @@ Starting Laravel development server: http://127.0.0.1:8000
 
 **Check `ApiClient.java` base URL:**
 
-- **For Android Emulator:** `http://10.0.2.2:8000`
+- **For Android Emulator:** `http://10.0.2.2:8000/`
   - `10.0.2.2` is the special IP that Android emulator uses to access the host machine's localhost
+  - **IMPORTANT:** Must include trailing slash `/` when endpoints don't start with `/`
 
-- **For Physical Device:** `http://YOUR_COMPUTER_IP:8000`
+- **For Physical Device:** `http://YOUR_COMPUTER_IP:8000/`
   - Find your computer's IP address:
     - **Windows:** `ipconfig` (look for IPv4 Address)
     - **Mac/Linux:** `ifconfig` (look for inet address)
-  - Example: `http://192.168.1.100:8000`
+  - Example: `http://192.168.1.100:8000/`
+  - **IMPORTANT:** Must include trailing slash `/`
 
 **Location:** `app/src/main/java/hans/ph/api/ApiClient.java`
 
 ```java
-private static final String BASE_URL = "http://10.0.2.2:8000"; // For emulator
+private static final String BASE_URL = "http://10.0.2.2:8000/"; // For emulator (note trailing slash)
 // OR
-private static final String BASE_URL = "http://192.168.1.100:8000"; // For physical device
+private static final String BASE_URL = "http://192.168.1.100:8000/"; // For physical device (note trailing slash)
 ```
 
 ### 3. Test API Endpoints in Browser
@@ -96,14 +98,24 @@ Should include:
 **In Android Studio:**
 
 1. Open **Logcat** tab
-2. Filter by tag: `ApiClient` or `OkHttp`
-3. Look for connection errors
+2. Filter by tag: `RegistrationError`, `ApiClient`, or `OkHttp`
+3. Look for connection errors and server responses
 
 **Common error messages:**
 - `Failed to connect to /10.0.2.2:8000` - Server not running
 - `Unable to resolve host` - Wrong URL or network issue
 - `Connection refused` - Server not accessible
 - `Connection timeout` - Server too slow or unreachable
+- `Response code: 500` - Server error, check Laravel logs
+- `Response code: 422` - Validation error, check error body for details
+
+**The app now logs detailed error information:**
+- Response codes
+- Error response bodies
+- Server error messages
+- Connection error details
+
+Look for logs tagged with `RegistrationError` to see the actual server response.
 
 ### 7. Verify Laravel API Routes
 
@@ -135,11 +147,14 @@ Should allow requests from your app.
 2. Verify server is running on port 8000
 3. Check if port 8000 is not blocked by firewall
 
-#### Problem: "Unable to resolve host"
+#### Problem: "Unable to resolve host" or "Server error failed to register"
 **Solution:**
-1. Check `ApiClient.java` BASE_URL is correct
-2. For emulator, use: `http://10.0.2.2:8000`
-3. For physical device, use your computer's IP address
+1. Check `ApiClient.java` BASE_URL is correct (must have trailing slash `/`)
+2. For emulator, use: `http://10.0.2.2:8000/` (note the trailing slash)
+3. For physical device, use your computer's IP address with trailing slash: `http://192.168.1.100:8000/`
+4. Check Android Logcat for detailed error messages (filter by "RegistrationError" or "ApiClient")
+5. Verify Laravel server is running and accessible
+6. Check Laravel server logs for actual error details
 
 #### Problem: Works in browser but not in app
 **Solution:**

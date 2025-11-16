@@ -329,13 +329,18 @@ public class RegisterActivity extends AppCompatActivity {
 
 	// Handle registration errors from backend
 	private void handleRegistrationError(Response<RegisterResponse> response) {
+        String errorBody = null;
         try {
-            String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-            Log.e("RegistrationError", "Response code: " + response.code() + ", Error: " + errorBody);
+            if (response.errorBody() != null) {
+                errorBody = response.errorBody().string();
+                Log.e("RegistrationError", "Response code: " + response.code() + ", Error body: " + errorBody);
+            } else {
+                Log.e("RegistrationError", "Response code: " + response.code() + ", No error body");
+            }
         } catch (java.io.IOException e) {
             Log.e("RegistrationError", "Error parsing error body", e);
         }
-		String errorMessage = getErrorMessage(response);
+		String errorMessage = getErrorMessage(response, errorBody);
 		showErrorMessage(errorMessage, response.code());
 	}
 
@@ -369,8 +374,41 @@ public class RegisterActivity extends AppCompatActivity {
 	}
 
 	// Get error message from HTTP error response
-	private String getErrorMessage(Response<RegisterResponse> response) {
+	private String getErrorMessage(Response<RegisterResponse> response, String errorBody) {
 		int statusCode = response.code();
+
+		// Try to parse error message from response body first
+		if (errorBody != null && !errorBody.isEmpty()) {
+			try {
+				com.google.gson.Gson gson = new com.google.gson.Gson();
+				RegisterResponse errorResponse = gson.fromJson(errorBody, RegisterResponse.class);
+				
+				// Check if there's a message in the response
+				if (errorResponse != null && errorResponse.getMessage() != null && !errorResponse.getMessage().isEmpty()) {
+					String serverMessage = errorResponse.getMessage();
+					Log.d("RegistrationError", "Server message: " + serverMessage);
+					
+					// Check for email errors in the response
+					if (errorResponse.getErrors() != null && errorResponse.getErrors().getEmail() != null) {
+						String[] emailErrors = errorResponse.getErrors().getEmail();
+						if (emailErrors.length > 0) {
+							String emailError = normalizeEmailError(emailErrors[0]);
+							runOnUiThread(() -> {
+								if (emailInputLayout != null) {
+									emailInputLayout.setError(emailError);
+								}
+							});
+							return emailError;
+						}
+					}
+					
+					// Return the server's error message
+					return serverMessage;
+				}
+			} catch (Exception e) {
+				Log.e("RegistrationError", "Failed to parse error body: " + errorBody, e);
+			}
+		}
 
 		// Handle validation errors (422)
 		if (statusCode == 422) {
@@ -389,7 +427,12 @@ public class RegisterActivity extends AppCompatActivity {
 
 		// Handle server errors (500)
 		if (statusCode == 500) {
-			return "Server error. Please try again later.";
+			return "Server error. Please check your Laravel server logs and try again.";
+		}
+
+		// Handle other errors
+		if (statusCode >= 400 && statusCode < 500) {
+			return "Invalid request. Please check your input and try again.";
 		}
 
 		return "Registration failed. Please try again.";
@@ -462,6 +505,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 	// Handle registration failure (network errors, etc.)
 	private void handleRegisterFailure(Throwable t) {
+		Log.e("RegistrationError", "Registration failed with exception", t);
 		String errorMsg = getConnectionErrorMessage(t);
 		runOnUiThread(() -> {
 			showMessage(errorMsg);
