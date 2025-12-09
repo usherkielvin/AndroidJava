@@ -32,7 +32,7 @@
                 android:clipToPadding="false"
                 android:orientation="vertical">
                 <FrameLayout
-                    android:id="@+id/ricrvdqk3r9"
+                    android:id="@+id/ashcol_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
@@ -59,7 +59,7 @@
                 </FrameLayout>
             </LinearLayout>
             <TextView
-                android:id="@+id/rjywzk9dbwl"
+                android:id="@+id/signintext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
