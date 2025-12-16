@@ -47,9 +47,9 @@
                         android:layout_height="111dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="115dp"
+                        android:contentDescription="@string/app_name"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher"
-                        android:contentDescription="@string/app_name" />
+                        android:src="@drawable/ash" />
                 </RelativeLayout>
 
                 <TextView
@@ -105,9 +105,9 @@
                     android:layout_height="18dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="6dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="@string/email"
                     android:scaleType="fitXY"
-                    android:contentDescription="@string/email" />
+                    android:src="@drawable/ic_profile" />
 
                 <EditText
                     android:id="@+id/emailInput"
@@ -144,9 +144,9 @@
                     android:layout_width="18dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="6dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="@string/password"
                     android:scaleType="fitXY"
-                    android:contentDescription="@string/password" />
+                    android:src="@android:drawable/ic_lock_lock" />
 
                 <EditText
                     android:id="@+id/passwordInput"
