@@ -1,13 +1,13 @@
 {
     "java.configuration.runtimes": [
         {
-            "name": "JavaSE-11",
-            "path": "C:/Program Files/Android/Android Studio/jbr",
+            "name": "JavaSE-21",
+            "path": "C:/Users/usher/.jdks/ms-21.0.9",
             "default": true
         }
     ],
-    "java.jdt.ls.java.home": "C:/Program Files/Android/Android Studio/jbr",
-    "java.import.gradle.java.home": "C:/Program Files/Android/Android Studio/jbr",
+    "java.jdt.ls.java.home": "C:/Users/usher/.jdks/ms-21.0.9",
+    "java.import.gradle.java.home": "C:/Users/usher/.jdks/ms-21.0.9",
     "java.import.gradle.wrapper.enabled": true,
     "java.import.gradle.enabled": true,
     "java.configuration.updateBuildConfiguration": "interactive"
