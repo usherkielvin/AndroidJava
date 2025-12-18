@@ -12,6 +12,3 @@
     "java.import.gradle.enabled": true,
     "java.configuration.updateBuildConfiguration": "interactive"
 }
-{
-    "java.configuration.updateBuildConfiguration": "interactive"
-}
