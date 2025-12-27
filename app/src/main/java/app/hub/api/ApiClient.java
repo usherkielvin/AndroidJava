@@ -10,6 +10,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 public class ApiClient {
     private static final String TAG = "ApiClient";
     
@@ -18,7 +20,7 @@ public class ApiClient {
     // For physical device: http://YOUR_COMPUTER_IP:8000/
     // Example: http://192.168.1.100:8000/
     // Note: Trailing slash is required when endpoints don't start with /
-    private static final String BASE_URL = "http://192.168.0.103:8000/";
+    private static final String BASE_URL = "http://10.0.2.2:8000/";
     
     private static Retrofit retrofit = null;
 
@@ -28,8 +30,11 @@ public class ApiClient {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             
-            // Create OkHttpClient with logging
+            // Create OkHttpClient with increased timeouts and logging
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)      // Connection timeout: 30 seconds
+                    .readTimeout(30, TimeUnit.SECONDS)         // Read timeout: 30 seconds
+                    .writeTimeout(30, TimeUnit.SECONDS)        // Write timeout: 30 seconds
                     .addInterceptor(loggingInterceptor)
                     .build();
             

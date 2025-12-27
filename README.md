@@ -6,246 +6,440 @@
 
 ServiceHub is an all-in-one native Android application that serves **customers**, **employees (staff)**, and **administrators** - providing comprehensive mobile access to all aspects of Ashcol's service management ecosystem. The app connects seamlessly to the Ashcol Portal Laravel backend, enabling users to manage tickets, profiles, workloads, and business operations from anywhere.
 
-### User Roles & Capabilities
+---
 
-#### 👤 **Customers**
-- Create and track service tickets
-- View ticket status and updates
-- Add comments to tickets
-- Manage profile and account settings
-- Request new services
-- View service history
+## 📱 Current Features (As of Now)
 
-#### 👷 **Employees (Staff)**
-- View assigned tickets and workloads
-- Update ticket status and priorities
-- Add comments and updates to tickets
-- Manage work schedule and availability
-- View customer information
-- Track assigned service requests
+### ✅ **Authentication & User Management**
 
-#### 👨‍💼 **Administrators**
-- Full system access and management
-- View all tickets across the organization
-- Assign tickets to staff members
-- Manage users, employees, and branches
-- Access analytics and reporting
-- Configure system settings
-- Oversee workload distribution
+#### Login System
+- **Email & Password Login** (`MainActivity`)
+  - Real-time email validation
+  - Secure token-based authentication (Laravel Sanctum)
+  - Auto-login check (remembers logged-in users)
+  - Role-based navigation after login
+  - Comprehensive error handling with user-friendly messages
+  - Connection diagnostics for troubleshooting
 
-## Current Status
+#### Registration System
+- **User Registration** (`RegisterActivity`)
+  - Full registration form with validation:
+    - Username
+    - First Name & Last Name
+    - Email (with real-time validation)
+    - Password & Confirm Password (strength indicator)
+    - Role selection (customer/staff/admin)
+  - **Email Verification System**:
+    - Send verification code via email
+    - 6-digit code verification
+    - Code expiration handling (10 minutes)
+    - Resend verification code functionality
+  - Form validation with visual feedback
+  - Password strength requirements
 
-### ✅ Completed Features
-- ✅ User Authentication (Login/Logout)
-- ✅ API Integration (Laravel ↔ Android)
-- ✅ Token-based Authentication (Sanctum)
-- ✅ Profile View (shows email)
-- ✅ Basic Dashboard
-
-## 🗺️ Roadmap
-
-### Phase 1: Profile Enhancement (1-2 days) ⭐ HIGH PRIORITY
-**Status:** Not Started
-
-**Features:**
-- View full user profile (name, email, role)
-- Edit profile (update name, email)
-- Change password
-- Profile picture (optional)
-
-**API Endpoints Needed:**
-- `PUT /api/v1/profile` - Update profile
-- `PUT /api/v1/profile/password` - Change password
-
-**Android Features:**
-- ProfileActivity with edit form
-- Update name and email
-- Change password functionality
-- Better UI for profile display
+#### Profile Management
+- **View Profile** (`ProfileActivity`)
+  - Display user information:
+    - Full name
+    - Email address
+    - Role
+  - Fetch user data from API
+- **Edit Profile** (`ProfileActivity`)
+  - Update name
+  - Update email
+  - Change password functionality
+  - Profile information editing with validation
+- **Logout** (`ProfileActivity`)
+  - Secure logout with token clearing
+  - API logout call
+  - Navigation back to login screen
 
 ---
 
-### Phase 2: Ticket System (3-5 days) ⭐⭐ HIGH PRIORITY
-**Status:** Not Started
+### ✅ **Ticket Management System**
 
-**Features:**
-- **For Customers:** List their own tickets, create new service requests
-- **For Employees:** View assigned tickets, update status, manage workload
-- **For Admins:** View all tickets, assign to staff, manage priorities
-- Create new ticket with priority selection
-- View ticket details with full history
-- Add comments to tickets
-- Update ticket status (role-based permissions)
-- Filter tickets by status, priority, date
-- Real-time ticket updates
+#### Customer Ticket Features
+- **Create Service Tickets** (`user_createTicket` Fragment, `ServiceSelectActivity`)
+  - Service type selection
+  - Ticket details form:
+    - Title
+    - Description
+    - Address
+    - Contact information
+  - **Image Upload Support**:
+    - Camera capture
+    - Gallery selection
+    - Image preview
+    - Multipart form data upload
+  - Ticket creation with API integration
+  - Form validation
 
-**API Endpoints Needed:**
-- `GET /api/v1/tickets` - List tickets
-- `POST /api/v1/tickets` - Create ticket
-- `GET /api/v1/tickets/{id}` - Get ticket details
-- `PUT /api/v1/tickets/{id}` - Update ticket
-- `POST /api/v1/tickets/{id}/comments` - Add comment
-- `GET /api/v1/tickets/{id}/comments` - Get comments
+- **View My Tickets** (`user_Ticket` Fragment, `MyTicketsFragment`)
+  - List of user's tickets
+  - Ticket status tracking
+  - Ticket history
 
-**Android Features:**
-- TicketsListActivity - RecyclerView with tickets
-- CreateTicketActivity - Form to create ticket
-- TicketDetailActivity - View ticket and comments
-- AddCommentActivity/Dialog - Add comments
+- **Ticket Details** (`user_Ticket` Fragment)
+  - View ticket information
+  - Ticket status and updates
 
----
+#### Employee Ticket Features
+- **Assigned Tickets** (`EmployeeAssignedTicketsFragment`)
+  - View tickets assigned to the employee
+  - Ticket management interface
 
-### Phase 3: Dashboard Improvement (1-2 days) ⭐ MEDIUM PRIORITY
-**Status:** Not Started
+- **In Progress Tickets** (`InProgressFragment`)
+  - View tickets currently in progress
+  - Status tracking
 
-**Features:**
-- **Customer Dashboard:** My Tickets count, Recent activity, Quick service request
-- **Employee Dashboard:** Assigned tickets, Today's workload, Upcoming tasks, Availability status
-- **Admin Dashboard:** System overview, All tickets, Staff workload, Branch statistics, User management
-- Welcome message with user name and role
-- Statistics cards (role-specific metrics)
-- Quick action buttons (role-based)
-- Recent activity feed
-- Role-based dashboard with customized widgets
+- **Completed Tickets** (`CompletedFragment`)
+  - View completed tickets
+  - Work history
 
----
+#### Admin Ticket Features
+- **All Tickets View** (`AdminAllTicketsFragment`)
+  - View all tickets across the system
+  - System-wide ticket oversight
 
-### Phase 4: UI/UX Enhancements (2-3 days) ⭐ MEDIUM PRIORITY
-**Status:** Not Started
-
-**Improvements:**
-- Material Design 3 components
-- Loading indicators (ProgressBar, Shimmer effect)
-- Pull-to-refresh for lists
-- Empty states (no tickets, no data)
-- Error states with retry buttons
-- Better navigation (Bottom Navigation, Navigation Drawer)
-- Better color scheme and icons
+- **Ticket Assignments** (`AssignmentsFragment`)
+  - Assign tickets to staff members
+  - Workload management
 
 ---
 
-### Phase 5: Search & Filter ⭐ MEDIUM PRIORITY
-**Status:** Not Started
+### ✅ **Role-Based Dashboards**
 
-**Features:**
-- Search tickets by title/description
-- Filter tickets by status
-- Sort tickets (date, status, priority)
+#### Customer Dashboard (`DashboardActivity`)
+- Welcome screen with user information
+- **AI Chatbot Integration**:
+  - Interactive chatbot interface
+  - Send messages and receive AI responses
+  - Chat history display
+  - Real-time messaging
+- Quick access to:
+  - Create new tickets
+  - View my tickets
+  - Profile management
+- Bottom navigation for easy access
 
----
+#### Employee Dashboard (`employee_DashboardActivity`)
+- Employee-specific dashboard
+- Bottom navigation with:
+  - **Dashboard** (`EmployeeDashboardFragment`) - Overview
+  - **Assigned Tickets** (`EmployeeAssignedTicketsFragment`) - My assignments
+  - **In Progress** (`InProgressFragment`) - Active work
+  - **Completed** (`CompletedFragment`) - Finished work
+  - **Settings** (`EmployeeSettingsFragment`) - Employee settings
 
-### Phase 6: Notifications ⭐ LOW PRIORITY
-**Status:** Not Started
-
-**Features:**
-- Push notifications for ticket updates
-- In-app notifications
-- Notification settings
-
-**Requires:**
-- Firebase Cloud Messaging (FCM)
-- Laravel notification system
-
----
-
-### Phase 7: Offline Support ⭐ LOW PRIORITY (Advanced)
-**Status:** Not Started
-
-**Features:**
-- Cache data locally (Room Database)
-- Sync when online
-- Offline mode indicator
-
----
-
-### Phase 8: Workload Management (For Employees & Admins) ⭐ MEDIUM PRIORITY
-**Status:** Not Started
-
-**Features:**
-- **For Employees:** View assigned workloads, update availability, calendar view
-- **For Admins:** Assign tickets to staff, manage schedules, workload distribution
-- Workload calendar and scheduling
-- Today/Upcoming/Overdue views
-- Staff availability management
-- Workload assignment interface
+#### Admin Dashboard (`admin_DashboardActivity`)
+- Full administrative control panel
+- Bottom navigation with:
+  - **All Tickets** (`AdminAllTicketsFragment`) - System-wide ticket view
+  - **Branches** (`BranchesFragment`) - Branch management
+  - **Assignments** (`AssignmentsFragment`) - Ticket assignment
+  - **Reports** (`ReportsFragment`) - Analytics and reporting
+  - **Users** (`UsersFragment`) - User management
 
 ---
 
-### Phase 9: Employee & Branch Management (For Admins) ⭐ LOW PRIORITY
-**Status:** Not Started
+### ✅ **Additional Features**
 
-**Features:**
-- Employee roster management
-- Branch management and assignment
-- Skills and position tracking
-- Link employees to users
-- Branch-based ticket filtering
+#### User Interface
+- **Material Design 3** components
+- **Bottom Navigation** for role-based dashboards
+- **Fragments** for modular UI components
+- **Responsive layouts** for different screen sizes
+- **Loading states** and progress indicators
+- **Error handling** with user-friendly dialogs
 
----
+#### Service Selection
+- **Service Type Selection** (`ServiceSelectActivity`)
+  - Choose service type
+  - Create tickets with service-specific information
+  - Image attachment support
 
-## 🛠️ Technical Improvements (Future)
+#### Employee Management (Admin)
+- **Add Employee** (`admin_addEmployee`)
+  - Create new employee accounts
+  - Employee registration form
 
-### Architecture Enhancements
-- [ ] Add Repository Pattern (UserRepository, TicketRepository)
-- [ ] Add ViewModel (Android Architecture Components)
-- [ ] Better State Management (sealed classes for state)
-- [ ] Add Dependency Injection (Hilt or Dagger)
+#### User Management (Admin)
+- **Users View** (`UsersFragment`)
+  - View all system users
+  - User management interface
 
----
-
-## 📝 API Endpoints Status
-
-### Profile:
-- ✅ `GET /api/v1/user` - Already exists
-- ❌ `PUT /api/v1/profile` - Need to create
-- ❌ `PUT /api/v1/profile/password` - Need to create
-
-### Tickets:
-- ❌ `GET /api/v1/tickets` - Need to create
-- ❌ `POST /api/v1/tickets` - Need to create
-- ❌ `GET /api/v1/tickets/{id}` - Need to create
-- ❌ `PUT /api/v1/tickets/{id}` - Need to create
-- ❌ `POST /api/v1/tickets/{id}/comments` - Need to create
+#### Notifications
+- **Notification Fragment** (`user_Notification`)
+  - User notifications display
+  - Notification management
 
 ---
 
-## 🚀 Quick Wins (Easy to Implement)
+## 🔧 Technical Features
 
-1. **Show User Name in Dashboard** - Display user name instead of just email
-2. **Add Logout Button to Dashboard** - Quick access to logout
-3. **Display User Role** - Show user role in profile
-4. **Improve Error Handling** - Show specific error messages with retry functionality
+### API Integration
+- **RESTful API** communication with Laravel backend
+- **Retrofit 2** for HTTP requests
+- **OkHttp** with logging interceptor
+- **Gson** for JSON parsing
+- **Token-based authentication** (Bearer tokens)
+- **30-second timeouts** for reliable connections
+- **Error handling** with detailed diagnostics
+
+### Security
+- **Secure token storage** using SharedPreferences (`TokenManager`)
+- **Email validation** with real-time feedback
+- **Password strength validation**
+- **HTTPS/HTTP support** (configurable)
+- **Network security configuration**
+
+### Data Management
+- **Token persistence** across app sessions
+- **User data caching** (email, name, role)
+- **Auto-login** functionality
+- **Session management**
+
+### Network Configuration
+- **Emulator support**: `http://10.0.2.2:8000/`
+- **Physical device support**: Configurable IP address
+- **Cleartext traffic** allowed for development
+- **Network security config** for trusted domains
 
 ---
 
-## 📱 Next Recommended Feature
+## 📋 API Endpoints Used
 
-**Start with Profile Enhancement** - Quick to implement (1-2 days), improves user experience, and provides good practice for API updates.
+### Authentication
+- `POST /api/v1/login` - User login
+- `POST /api/v1/register` - User registration
+- `POST /api/v1/logout` - User logout
+- `POST /api/v1/send-verification-code` - Send email verification code
+- `POST /api/v1/verify-email` - Verify email with code
 
-**Then: Ticket System** - Most valuable feature, backend already ready, demonstrates full CRUD operations.
+### User Management
+- `GET /api/v1/user` - Get authenticated user information
+
+### Tickets
+- `POST /api/v1/tickets` - Create new ticket (with/without image)
+
+### Chatbot
+- `POST /api/v1/chatbot` - Send message to AI chatbot
 
 ---
 
-## Setup
+## 🎯 User Roles & Capabilities
+
+### 👤 **Customers**
+- ✅ Register new account with email verification
+- ✅ Login to account
+- ✅ View and edit profile
+- ✅ Change password
+- ✅ Create service tickets
+- ✅ Upload images with tickets
+- ✅ View own tickets
+- ✅ Use AI chatbot
+- ✅ Access customer dashboard
+
+### 👷 **Employees (Staff)**
+- ✅ Login to employee account
+- ✅ View assigned tickets
+- ✅ View in-progress tickets
+- ✅ View completed tickets
+- ✅ Access employee dashboard
+- ✅ Employee settings management
+
+### 👨‍💼 **Administrators**
+- ✅ Login to admin account
+- ✅ View all tickets system-wide
+- ✅ Manage ticket assignments
+- ✅ View branches
+- ✅ Access reports and analytics
+- ✅ Manage users
+- ✅ Add new employees
+- ✅ Full administrative access
+
+---
+
+## 🚀 Setup & Configuration
 
 ### Prerequisites
-- Android Studio
-- Java/Kotlin development environment
+- Android Studio (latest version)
+- Java 11+
 - Laravel backend running (see Ashcol Portal README)
+- Android device or emulator
 
 ### Configuration
-1. Update API base URL in `app/src/main/java/hans/ph/api/ApiClient.java`
-2. For physical device testing, use your computer's IP address instead of `localhost`
-3. Ensure phone and computer are on the same Wi-Fi network
+
+1. **Update API Base URL** (`app/src/main/java/app/hub/api/ApiClient.java`):
+   ```java
+   // For Android Emulator:
+   private static final String BASE_URL = "http://10.0.2.2:8000/";
+   
+   // For Physical Device (use your computer's IP):
+   private static final String BASE_URL = "http://192.168.0.103:8000/";
+   ```
+
+2. **Network Security** (`app/src/main/res/xml/network_security_config.xml`):
+   - Already configured for emulator and common IP addresses
+   - Add your IP if using physical device
+
+3. **Start Laravel Server**:
+   ```bash
+   cd C:\xampp\htdocs\Ashcol_Web
+   php artisan serve
+   ```
+
+4. **Build and Run**:
+   - Open project in Android Studio
+   - Sync Gradle files
+   - Build project
+   - Run on emulator or physical device
 
 ---
 
-## Contributing
+## 📦 Project Structure
 
-Branch naming: `feature/<name>` • Small, descriptive commits • Open PRs for review.
+```
+app/src/main/java/app/hub/
+├── api/                    # API interfaces and models
+│   ├── ApiClient.java      # Retrofit client configuration
+│   ├── ApiService.java     # API endpoint definitions
+│   └── [Request/Response models]
+├── util/                   # Utility classes
+│   ├── TokenManager.java   # Token storage and management
+│   └── EmailValidator.java # Email validation
+├── MainActivity.java        # Login screen
+├── RegisterActivity.java    # Registration with email verification
+├── DashboardActivity.java  # Customer dashboard with chatbot
+├── ProfileActivity.java     # Profile viewing and editing
+├── ServiceSelectActivity.java # Service selection and ticket creation
+├── admin_DashboardActivity.java # Admin dashboard
+├── employee_DashboardActivity.java # Employee dashboard
+├── admin_addEmployee.java  # Add employee (admin)
+└── [Fragments]             # UI fragments for different views
+    ├── user_createTicket.java
+    ├── user_Ticket.java
+    ├── user_Profile.java
+    ├── MyTicketsFragment.java
+    ├── AdminAllTicketsFragment.java
+    ├── EmployeeAssignedTicketsFragment.java
+    └── [Other fragments...]
+```
 
 ---
 
-## License
+## 🔐 Default Test Accounts
+
+After running Laravel migrations and seeders:
+
+- **Admin**: `admin@example.com` / `password`
+- **Staff**: `staff@example.com` / `password`
+- **Customer**: `customer@example.com` / `password`
+
+---
+
+## 🛠️ Technical Stack
+
+- **Language**: Java
+- **Minimum SDK**: 24 (Android 7.0)
+- **Target SDK**: 36 (Android 14)
+- **Architecture**: MVC (Model-View-Controller)
+- **Networking**: Retrofit 2.9.0, OkHttp 4.12.0
+- **JSON Parsing**: Gson
+- **UI Framework**: Material Design Components
+- **Backend**: Laravel 11 with Sanctum authentication
+
+---
+
+## 📝 Package Structure
+
+- **Package Name**: `app.hub`
+- **Namespace**: `app.hub`
+- **Application ID**: `app.hub`
+
+---
+
+## 🐛 Troubleshooting
+
+### Connection Issues
+- **"Connection Error"**: 
+  - Check if Laravel server is running (`php artisan serve`)
+  - Verify BASE_URL in `ApiClient.java`
+  - For emulator: Use `10.0.2.2:8000`
+  - For physical device: Use your computer's IP address
+  - Ensure device and computer are on same Wi-Fi network
+
+### Timeout Issues
+- Timeouts are set to 30 seconds (configurable in `ApiClient.java`)
+- Check network connection speed
+- Verify server is responding
+
+### Authentication Issues
+- Verify user exists in database
+- Check token is being saved correctly
+- Clear app data and re-login if needed
+
+---
+
+## 📚 Additional Documentation
+
+- `API_CONFIG.md` - API configuration guide
+- `MAINACTIVITY_EXPLANATION.md` - Detailed code explanation
+- `STATUS_SUMMARY.md` - Development status
+- `TROUBLESHOOTING.md` - Common issues and solutions
+
+---
+
+## 🗺️ Future Enhancements
+
+### Planned Features
+- [ ] Real-time ticket updates
+- [ ] Push notifications
+- [ ] Offline mode with local caching
+- [ ] Advanced ticket filtering and search
+- [ ] Ticket comments system
+- [ ] File attachments for tickets
+- [ ] Workload calendar view
+- [ ] Advanced reporting and analytics
+- [ ] Branch management features
+- [ ] Employee roster management
+
+### Technical Improvements
+- [ ] Repository pattern implementation
+- [ ] ViewModel integration (MVVM architecture)
+- [ ] Dependency injection (Hilt/Dagger)
+- [ ] Room database for offline support
+- [ ] Unit and integration tests
+- [ ] Code documentation improvements
+
+---
+
+## 🤝 Contributing
+
+- Branch naming: `feature/<name>`
+- Small, descriptive commits
+- Open PRs for review
+- Follow Material Design guidelines
+- Maintain code consistency
+
+---
+
+## 📄 License
 
 This project uses Android (Apache 2.0). See [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+---
+
+## 📞 Support
+
+For issues or questions:
+1. Check `TROUBLESHOOTING.md`
+2. Review API documentation
+3. Check Laravel backend logs
+4. Verify network configuration
+
+---
+
+**Last Updated**: Current as of latest implementation
+**Version**: 1.0
+**Status**: Active Development
