@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:layout_height="match_parent"
+    android:layout_marginTop="55dp"
+    android:layout_marginBottom="0dp"
+    android:background="@drawable/bg_green"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="#FF0000"
-        android:text="Choose a Service"
-        android:textColor="@color/white"
-        android:textSize="20sp"
+        android:background="#00FFFFFF"
+        android:text="@string/choose_a_service"
+        android:textAlignment="center"
+        android:textColor="#215531"
+        android:textSize="32sp"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_cleaning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="255dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
-        android:background="#FF0000"
-        android:backgroundTint="@color/white"
-        android:text="Cleaning" />
+        android:background="@drawable/verify_btn"
+        android:backgroundTint="@null"
+        android:text="@string/cleaning" />
 
     <Button
         android:id="@+id/btn_repair"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="255dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
-        android:background="#FF0000"
+        android:background="@drawable/verify_btn"
         android:backgroundTint="@color/white"
-        android:text="Repair" />
+        android:text="@string/repair" />
 
     <Button
         android:id="@+id/btn_installation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="257dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
-        android:background="#FF0000"
+        android:background="@drawable/verify_btn"
         android:backgroundTint="@color/white"
-        android:text="Installation" />
+        android:text="@string/installation" />
 
     <Button
         android:id="@+id/btn_maintenance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="257dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
-        android:background="#FF0000"
-        android:backgroundTint="@color/white"
-        android:text="Maintenance" />
+        android:background="@drawable/verify_btn"
+        android:backgroundTint="@null"
+        android:text="@string/maintenance" />
 
 </LinearLayout>

@@ -49,5 +49,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="choose_a_service">Choose a Service</string>
+    <string name="repair">Repair</string>
+    <string name="cleaning">Cleaning</string>
+    <string name="installation">Installation</string>
+    <string name="maintenance">Maintenance</string>
 
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cleaning">Cleaning</string>
+    <string name="installation">Installation</string>
+    <string name="maintenance">Maintenance</string>
+</resources>
